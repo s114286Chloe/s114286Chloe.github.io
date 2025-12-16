@@ -8,94 +8,50 @@
   <body>
       hello world
   </body>
-</html>
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>打字測試</title>
+  <title>打字測試系統</title>
+
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
-      padding: 40px;
-    }
-    .container {
-      background: white;
-      padding: 20px;
-      max-width: 600px;
-      margin: auto;
-      border-radius: 10px;
-    }
-    #targetText {
-      background: #eee;
-      padding: 10px;
-      border-radius: 5px;
-    }
-    textarea {
-      width: 100%;
-      height: 120px;
-      margin-top: 10px;
-      font-size: 16px;
-    }
-    button {
-      margin-top: 10px;
-      padding: 8px 16px;
-      font-size: 16px;
-    }
-  </style>
-</head>
-<body>
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Noto Sans TC", Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-<div class="container">
-  <h2>打字測試</h2>
-
-  <p>請照著以下文字輸入：</p>
-  <div id="targetText">
-  孟寶愛崴寶，崴寶愛孟寶。崴寶想孟寶，孟寶想崴寶。崴孟愛孟崴，孟崴想崴孟。孟想崴崴孟，崴想孟孟崴。
-  </div>
-
-  <textarea id="inputText" placeholder="從這裡開始輸入..."></textarea>
-  <button onclick="finish()">完成</button>
-
-  <p id="result"></p>
-</div>
-
-<script>
-  const targetText = document.getElementById("targetText").innerText;
-  const inputText = document.getElementById("inputText");
-  const result = document.getElementById("result");
-
-  let startTime = null;
-
-  inputText.addEventListener("input", () => {
-    if (!startTime) {
-      startTime = new Date();
-    }
-  });
-
-  function finish() {
-    if (!startTime) {
-      result.innerText = "請先開始輸入文字！";
-      return;
+      /* 背景照片（你的那張） */
+      background-image: url("background.webp");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
 
-    const endTime = new Date();
-    const timeUsed = (endTime - startTime) / 1000;
-
-    let correct = 0;
-    for (let i = 0; i < inputText.value.length; i++) {
-      if (inputText.value[i] === targetText[i]) {
-        correct++;
-      }
+    .card {
+      background: rgba(255, 255, 255, 0.92);
+      width: 90%;
+      max-width: 720px;
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      backdrop-filter: blur(2px);
     }
 
-    result.innerHTML = `
-      花費時間：${timeUsed.toFixed(2)} 秒<br>
-      正確字元數：${correct} / ${targetText.length}
-    `;
-  }
-</script>
+    h1 {
+      margin-top: 0;
+      text-align: center;
+      font-size: 28px;
+      letter-spacing: 2px;
+    }
 
-</body>
-</html>
+    .hint {
+      text-align: center;
+      color: #555;
+
