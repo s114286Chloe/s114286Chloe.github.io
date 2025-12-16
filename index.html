@@ -8,6 +8,8 @@
   <body>
       hello world
   </body>
+
+</html>
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -42,6 +44,11 @@
       padding: 8px 16px;
       font-size: 16px;
     }
+    /* 新增：時間顯示 */
+    #timer {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
@@ -49,9 +56,12 @@
 <div class="container">
   <h2>打字測試</h2>
 
+  <!-- 新增：經過時間顯示 -->
+  <div id="timer">經過時間：0.00 秒</div>
+
   <p>請照著以下文字輸入：</p>
   <div id="targetText">
-    孟寶愛崴寶，崴寶愛孟寶。崴寶想孟寶，孟寶想崴寶。崴孟愛孟崴，孟崴想崴孟。孟想崴崴孟，崴想孟孟崴。
+    心理學是一門研究人類行為與心理歷程的科學。
   </div>
 
   <textarea id="inputText" placeholder="從這裡開始輸入..."></textarea>
@@ -64,12 +74,20 @@
   const targetText = document.getElementById("targetText").innerText;
   const inputText = document.getElementById("inputText");
   const result = document.getElementById("result");
+  const timer = document.getElementById("timer");
 
   let startTime = null;
+  let timerInterval = null;
 
   inputText.addEventListener("input", () => {
     if (!startTime) {
-      startTime = new Date();
+      startTime = Date.now();
+
+      // 新增：即時更新時間
+      timerInterval = setInterval(() => {
+        const elapsed = (Date.now() - startTime) / 1000;
+        timer.innerText = `經過時間：${elapsed.toFixed(2)} 秒`;
+      }, 50);
     }
   });
 
@@ -79,7 +97,9 @@
       return;
     }
 
-    const endTime = new Date();
+    clearInterval(timerInterval);
+
+    const endTime = Date.now();
     const timeUsed = (endTime - startTime) / 1000;
 
     let correct = 0;
