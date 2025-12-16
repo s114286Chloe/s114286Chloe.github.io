@@ -27,21 +27,19 @@
       align-items: center;
       justify-content: center;
 
-      /* 背景照片（你的那張） */
-      background-image: url("background.webp");
+      background-image: url("background.jpg");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.95);
       width: 90%;
       max-width: 720px;
       padding: 32px;
       border-radius: 16px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-      backdrop-filter: blur(2px);
     }
 
     h1 {
@@ -54,4 +52,157 @@
     .hint {
       text-align: center;
       color: #555;
+      margin-bottom: 16px;
+    }
 
+    #timer {
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: #4b5cff;
+      margin-bottom: 20px;
+    }
+
+    .target {
+      background: #f7f9ff;
+      border-left: 6px solid #6b7cff;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 18px;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 140px;
+      resize: none;
+      padding: 14px;
+      font-size: 17px;
+      line-height: 1.6;
+      border-radius: 10px;
+      border: 2px solid #ddd;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #6b7cff;
+      box-shadow: 0 0 0 3px rgba(107,124,255,0.2);
+    }
+
+    .actions {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    button {
+      background: #6b7cff;
+      color: white;
+      border: none;
+      padding: 10px 28px;
+      font-size: 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+    }
+
+    button:hover {
+      background: #5a6af0;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(107,124,255,0.35);
+    }
+
+    #result {
+      margin-top: 24px;
+      padding: 16px;
+      background: #f3f5ff;
+      border-radius: 10px;
+      font-size: 16px;
+      line-height: 1.6;
+      display: none;
+    }
+
+    footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 13px;
+      color: #999;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1>打字測試系統</h1>
+  <p class="hint">請專注輸入下方文字，系統將記錄反應時間與正確率</p>
+
+  <div id="timer">0.00 秒</div>
+
+  <div class="target" id="targetText">
+    孟寶愛崴寶，崴寶愛孟寶。崴寶想孟寶，孟寶想崴寶。崴孟愛孟崴，孟崴想崴孟。孟想崴崴孟，崴想孟孟崴。
+  </div>
+
+  <textarea id="inputText" placeholder="從這裡開始輸入……"></textarea>
+
+  <div class="actions">
+    <button onclick="finish()">完成測試</button>
+  </div>
+
+  <div id="result"></div>
+
+  <footer>
+    Typing Test · Web-based Psychological Task
+  </footer>
+</div>
+
+<script>
+  const targetText = document.getElementById("targetText").innerText;
+  const inputText = document.getElementById("inputText");
+  const result = document.getElementById("result");
+  const timerDisplay = document.getElementById("timer");
+
+  let startTime = null;
+  let timerInterval = null;
+
+  inputText.addEventListener("input", () => {
+    if (!startTime) {
+      startTime = Date.now();
+
+      timerInterval = setInterval(() => {
+        const elapsed = (Date.now() - startTime) / 1000;
+        timerDisplay.innerText = `${elapsed.toFixed(2)} 秒`;
+      }, 50);
+    }
+  });
+
+  function finish() {
+    if (!startTime) {
+      result.style.display = "block";
+      result.innerText = "請先開始輸入文字。";
+      return;
+    }
+
+    clearInterval(timerInterval);
+
+    const timeUsed = (Date.now() - startTime) / 1000;
+
+    let correct = 0;
+    for (let i = 0; i < inputText.value.length; i++) {
+      if (inputText.value[i] === targetText[i]) {
+        correct++;
+      }
+    }
+
+    result.style.display = "block";
+    result.innerHTML = `
+      <strong>測試結果</strong><br>
+      花費時間：${timeUsed.toFixed(2)} 秒<br>
+      正確字元數：${correct} / ${targetText.length}
+    `;
+  }
+</script>
+
+</body>
+</html>
